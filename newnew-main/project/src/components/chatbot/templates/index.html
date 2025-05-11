@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NidhiSakhi - Your Financial Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap");
+      :root {
+        --primary: #2563eb;
+        --secondary: #1e40af;
+        --accent: #d4af37;
+        --background: #f8fafc;
+        --text: #1e293b;
+      }
+      body {
+        font-family: "Playfair Display", serif;
+        background: var(--background);
+        color: var(--text);
+      }
+      .gradient-header {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+      .text-secondary-500 {
+        color: rgb(255, 193, 7);
+      }
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        max-width: 900px;
+        margin: 0 auto;
+        font-family: "Open Sans", sans-serif;
+      }
+      .message-bubble {
+        border-radius: 1.5rem;
+        padding: 1.5rem 2rem;
+        max-width: 85%;
+        transition: all 0.3s ease;
+        animation: slideIn 0.3s ease-out;
+        font-size: 1.1rem;
+      }
+      .ai-bubble {
+        background: white;
+        border: 1px solid rgba(210, 214, 220, 0.3);
+        box-shadow: 0 2px 12px rgba(37, 99, 235, 0.08);
+      }
+      .user-bubble {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        box-shadow: 0 2px 12px rgba(37, 99, 235, 0.15);
+        margin-left: auto;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .waveform {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+      .wave-bar {
+        width: 3px;
+        background: currentColor;
+        animation: wave 1.2s ease infinite;
+      }
+      .hover-scale {
+        transition: transform 0.3s ease;
+      }
+      .hover-scale:hover {
+        transform: translateY(-2px);
+      }
+      .gold-accent {
+        color: var(--accent);
+      }
+      .chat-container {
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .chat-input {
+        font-size: 1.1rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="gradient-header shadow-xl">
+      <nav
+        class="container mx-auto px-4 py-4 flex items-center justify-between"
+      >
+        <div class="flex items-center space-x-4">
+          <div class="logo flex items-center space-x-3">
+            <div
+              class="w-12 h-12 bg-[var(--accent)] rounded-xl flex items-center justify-center"
+            >
+              <i class="bx bx-shield-alt-2 text-3xl text-white"></i>
+            </div>
+            <span class="font-serif text-3xl font-bold text-white"
+              >Nidhi<span class="text-secondary-500">Sakhi</span></span
+            >
+          </div>
+        </div>
+        <div class="flex items-center space-x-6">
+          <button
+            id="start_voice"
+            class="bg-white/10 text-white rounded-xl px-5 py-3 hover:bg-white/20 transition-colors flex items-center space-x-2 text-lg"
+          >
+            <i class="bx bx-microphone"></i>
+            <span>Start Voice</span>
+          </button>
+          <select
+            id="language_selector"
+            class="bg-white/10 text-white rounded-xl px-5 py-3 focus:outline-none hover:bg-white/20 transition-colors text-lg"
+          >
+            <option value="en-US">English</option>
+            <option value="hi-IN">हिन्दी</option>
+          </select>
+        </div>
+      </nav>
+    </header>
+    <main class="chat-container">
+      <div class="glass-panel rounded-2xl shadow-xl p-8 w-full">
+        <div class="flex items-center justify-between mb-8">
+          <h1 class="text-3xl font-bold">
+            <span class="gold-accent">AI-Powered</span> Financial Guidance
+          </h1>
+          <div class="flex items-center space-x-2 text-[var(--secondary)]">
+            <div
+              class="w-3 h-3 bg-[var(--secondary)] rounded-full animate-pulse"
+            ></div>
+            <span class="text-lg font-medium">Active Session</span>
+          </div>
+        </div>
+        <div
+          id="chat"
+          class="h-[600px] overflow-y-auto space-y-6 mb-8 pr-4 custom-scroll"
+        >
+          <div class="message-bubble ai-bubble">
+            <p class="text-[var(--text)]">
+              Welcome to NidhiSakhi! Your journey to financial freedom starts
+              here. How can I assist you today?
+            </p>
+            <div
+              class="absolute bottom-4 right-4 text-[var(--primary)] text-sm"
+            >
+              <i class="bx bx-bot"></i>
+            </div>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="flex space-x-3">
+            <input
+              id="user_message"
+              type="text"
+              class="w-full px-5 py-4 rounded-xl border border-[var(--primary)]/20 focus:ring-2 focus:ring-[var(--accent)] focus:border-[var(--accent)] placeholder-[var(--text)]/50 transition chat-input"
+              placeholder="Ask about loans, savings, or investments..."
+              onkeypress="if(event.key==='Enter')document.getElementById('send_message').click()"
+            />
+            <button
+              id="send_message"
+              class="px-8 bg-[var(--primary)] hover:bg-[var(--secondary)] text-white rounded-xl transition-colors flex items-center justify-center hover-scale text-xl"
+            >
+              <i class="bx bx-send"></i>
+            </button>
+          </div>
+          <div class="flex items-center justify-between mt-6">
+            <div class="flex space-x-4">
+              <button
+                id="voice_input"
+                class="p-3 bg-[var(--primary)]/5 hover:bg-[var(--primary)]/10 text-[var(--primary)] rounded-lg transition-colors relative hover-scale text-xl"
+              >
+                <i class="bx bx-microphone"></i>
+                <div
+                  id="recording_indicator"
+                  class="hidden absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"
+                ></div>
+              </button>
+              <button
+                id="toggle_tts"
+                class="p-3 bg-[var(--primary)]/5 hover:bg-[var(--primary)]/10 text-[var(--primary)] rounded-lg transition-colors hover-scale text-xl"
+              >
+                <i class="bx bx-volume-full"></i>
+              </button>
+              <button
+                id="stop_tts"
+                class="p-3 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition-colors hover-scale text-xl"
+              >
+                <i class="bx bx-stop-circle"></i>
+              </button>
+            </div>
+            <span class="text-lg text-[var(--text)]/70"
+              >Shift + Enter for new line</span
+            >
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      const chat = document.getElementById("chat");
+      const userMessageInput = document.getElementById("user_message");
+      const languageSelector = document.getElementById("language_selector");
+      let synth = window.speechSynthesis;
+      let recognition;
+      let isTTSEnabled = true;
+      let currentUtterance = null;
+      let isRecording = false;
+
+      function addMessage(text, sender = "ai") {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message-bubble ${
+          sender === "ai" ? "ai-bubble" : "user-bubble"
+        }`;
+
+        const content = `
+              <p class="${
+                sender === "ai" ? "text-gray-700" : "text-white"
+              }" style="font-size: 1.1rem;">${text}</p>
+              <div class="absolute bottom-4 right-4 text-sm ${
+                sender === "ai" ? "text-blue-400" : "text-blue-100"
+              }">
+                  ${
+                    sender === "ai"
+                      ? '<i class="bx bx-bot"></i>'
+                      : '<i class="bx bx-user"></i>'
+                  }
+              </div>
+          `;
+
+        messageDiv.innerHTML = content;
+        chat.appendChild(messageDiv);
+        chat.scrollTop = chat.scrollHeight;
+      }
+
+      function handleVoiceInput() {
+        if (!("webkitSpeechRecognition" in window)) {
+          alert("Speech recognition is not supported in your browser");
+          return;
+        }
+
+        recognition = new (window.SpeechRecognition ||
+          window.webkitSpeechRecognition)();
+        recognition.lang = languageSelector.value;
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        if (!isRecording) {
+          recognition.start();
+          document
+            .getElementById("recording_indicator")
+            .classList.remove("hidden");
+          isRecording = true;
+        } else {
+          recognition.stop();
+          document
+            .getElementById("recording_indicator")
+            .classList.add("hidden");
+          isRecording = false;
+        }
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          userMessageInput.value = transcript;
+          handleUserMessage();
+          document
+            .getElementById("recording_indicator")
+            .classList.add("hidden");
+          isRecording = false;
+        };
+
+        recognition.onerror = (event) => {
+          console.error("Speech recognition error:", event.error);
+          document
+            .getElementById("recording_indicator")
+            .classList.add("hidden");
+          isRecording = false;
+        };
+
+        recognition.onend = () => {
+          if (isRecording) {
+            recognition.start();
+          }
+        };
+      }
+
+      function toggleTTS() {
+        isTTSEnabled = !isTTSEnabled;
+        document.querySelector("#toggle_tts i").className = isTTSEnabled
+          ? "bx bx-volume-full text-xl"
+          : "bx bx-volume-mute text-xl";
+      }
+
+      function stopTTS() {
+        if (synth.speaking) {
+          synth.cancel();
+          document.querySelector("#toggle_tts i").classList.remove("bx-pulse");
+        }
+      }
+
+      function speak(text) {
+        if (!isTTSEnabled) return;
+        if (synth.speaking) synth.cancel();
+
+        currentUtterance = new SpeechSynthesisUtterance(text);
+        currentUtterance.lang = languageSelector.value;
+        currentUtterance.rate = 1;
+        currentUtterance.pitch = 1;
+
+        const ttsIcon = document.querySelector("#toggle_tts i");
+        ttsIcon.classList.add("bx-pulse");
+        currentUtterance.onend = () => ttsIcon.classList.remove("bx-pulse");
+
+        synth.speak(currentUtterance);
+      }
+
+      async function handleUserMessage() {
+        const userText = userMessageInput.value.trim();
+        if (!userText) return;
+
+        addMessage(userText, "user");
+        userMessageInput.value = "";
+
+        const loadingDiv = document.createElement("div");
+        loadingDiv.className = "message-bubble ai-bubble";
+        loadingDiv.innerHTML = `
+              <div class="flex items-center space-x-3 text-blue-400">
+                  <div class="waveform">
+                      <div class="wave-bar"></div>
+                      <div class="wave-bar" style="animation-delay: 0.2s"></div>
+                      <div class="wave-bar" style="animation-delay: 0.4s"></div>
+                  </div>
+                  <span class="text-lg">Analyzing...</span>
+              </div>
+          `;
+        chat.appendChild(loadingDiv);
+        chat.scrollTop = chat.scrollHeight;
+
+        try {
+          const response = await fetch("/send_message", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              message: userText,
+              language: languageSelector.value,
+              chat_type: "ai",
+            }),
+          });
+
+          const data = await response.json();
+          chat.removeChild(loadingDiv);
+          addMessage(data.response, "ai");
+          speak(data.response);
+        } catch (error) {
+          chat.removeChild(loadingDiv);
+          addMessage(
+            "Sorry, there was an error processing your request.",
+            "ai"
+          );
+          console.error("Error:", error);
+        }
+      }
+
+      document
+        .getElementById("send_message")
+        .addEventListener("click", handleUserMessage);
+      document
+        .getElementById("voice_input")
+        .addEventListener("click", handleVoiceInput);
+      document
+        .getElementById("toggle_tts")
+        .addEventListener("click", toggleTTS);
+      document.getElementById("stop_tts").addEventListener("click", stopTTS);
+
+      window.onload = () => {
+        speak(
+          "Welcome to NidhiSakhi! Your journey to financial freedom starts here. How can I assist you today?"
+        );
+      };
+
+      document.getElementById("start_voice").addEventListener("click", () => {
+        isTTSEnabled = true;
+        document.querySelector("#toggle_tts i").className =
+          "bx bx-volume-full text-xl";
+        speak(
+          "Hello! I'm NidhiSakhi, your financial companion. How can I assist you with loans or savings today?"
+        );
+      });
+    </script>
+  </body>
+</html>
